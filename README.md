@@ -1,5 +1,5 @@
 
-# Slot Machine Microservices
+# Slot Machine System
 
 This project implements a slot machine game with points accumulation and rewards using a microservices architecture.
 

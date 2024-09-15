@@ -26,35 +26,31 @@ app.post('/spin', async (req, res) => {
     }
 
     try {
-        console.log(`Checking balance for user ${userId}`);
-        const { data: balanceData } = await axios.get(`${process.env.POINTS_API}/balance/${userId}/spins`);
-        if (balanceData.balance <= 0) {
-            console.log(`User ${userId} attempted to spin with insufficient balance`);
+        const { data: balanceData } = await axios.get(`${process.env.POINTS_API}/balance/${userId}`);
+        if (balanceData.spins <= 0) {
             return res.status(403).json({ error: 'Not enough spins' });
         }
 
         const spinResult = generateSpinResult();
-        console.log(`User ${userId} spin result: ${spinResult}`);
-
         const updateResponse = await axios.post(`${process.env.POINTS_API}/update`, {
             userId,
             spinResult,
             spinsUsed: 1
         });
 
-        const { data: updatedSpinsData } = await axios.get(`${process.env.POINTS_API}/balance/${userId}/spins`);
-        const spinsLeft = updatedSpinsData.balance;
-
-        console.log(`User ${userId} has ${spinsLeft} spins left`);
-
         res.json({
             spinResult,
             pointsEarned: updateResponse.data.pointsEarned,
-            newBalance: updateResponse.data.newBalance,
-            spinsLeft
+            newPointsBalance: updateResponse.data.newPointsBalance,  // Rename to newPointsBalance
+            newCoinsBalance: updateResponse.data.newCoinsBalance,
+            spinsLeft: balanceData.spins - 1,
+            coinsLeft: balanceData.coins,
+            pointsLeft: balanceData.points,
+            missionCompleted: updateResponse.data.missionCompleted,
+            currentMissionIndex: updateResponse.data.missionIndex,
+            currentMissionGoal: updateResponse.data.currentMissionGoal
         });
     } catch (error) {
-        console.error(`Error during spin for user ${userId}: ${error.message}`);
         res.status(500).json({ error: 'Internal server error' });
     }
 });

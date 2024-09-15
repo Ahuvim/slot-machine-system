@@ -1,14 +1,46 @@
 openapi: 3.0.0
 info:
   title: Points Service API
-  description: Points Service to manage spins and points balance for a slot machine game.
+  description: Points Service to manage spins, points, and coins balance for a slot machine game.
   version: 1.0.0
 servers:
   - url: http://localhost:3001
 paths:
+  /balance/{userId}:
+    get:
+      summary: Get the balance of spins, points, and coins
+      tags:
+        - Points
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+            description: The ID of the user
+      responses:
+        '200':
+          description: Successful response with spins, points, and coins
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  spins:
+                    type: integer
+                  points:
+                    type: integer
+                  coins:
+                    type: integer
+              example:
+                spins: 5
+                points: 100
+                coins: 10
+        '500':
+          description: Internal server error
   /balance/{userId}/{resource}:
     get:
-      summary: Get the balance of spins or points
+      summary: Get the balance of a specific resource (spins, points, or coins)
       tags:
         - Points
       parameters:
@@ -22,7 +54,7 @@ paths:
           required: true
           schema:
             type: string
-            enum: [points, spins]
+            enum: [points, spins, coins]
       responses:
         '200':
           description: Successful response
@@ -39,7 +71,7 @@ paths:
           description: Internal server error
   /update:
     post:
-      summary: Update the user's points and spins after a spin
+      summary: Update the user's points, coins, and spins after a spin
       tags:
         - Points
       requestBody:
@@ -73,17 +105,20 @@ paths:
                     type: integer
                   newBalance:
                     type: integer
+                  newCoinsBalance:
+                    type: integer
                   missionCompleted:
                     type: boolean
               example:
                 pointsEarned: 21
                 newBalance: 71
+                newCoinsBalance: 10
                 missionCompleted: true
         '500':
           description: Internal server error
   /set-balance:
     post:
-      summary: Set the balance of spins or points for a user
+      summary: Set the balance of spins, points, or coins for a user
       tags:
         - Points
       requestBody:
@@ -97,12 +132,12 @@ paths:
                   type: string
                 resource:
                   type: string
-                  enum: [points, spins]
+                  enum: [points, spins, coins]
                 amount:
                   type: integer
             example:
               userId: "user123"
-              resource: "spins"
+              resource: "coins"
               amount: 10
       responses:
         '200':
@@ -117,7 +152,7 @@ paths:
                   newBalance:
                     type: integer
               example:
-                message: "Spins balance updated successfully"
+                message: "Coins balance updated successfully"
                 newBalance: 10
         '500':
           description: Internal server error

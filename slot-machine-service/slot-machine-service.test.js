@@ -18,30 +18,28 @@ describe('Slot Machine Service', () => {
     });
 
     describe('POST /spin', () => {
-        it('should return spin result and update points', async () => {
-            axios.get.mockResolvedValueOnce({ data: { balance: 10 } });
-            axios.post.mockResolvedValueOnce({ data: { pointsEarned: 21, newBalance: 71 } });
-            axios.get.mockResolvedValueOnce({ data: { balance: 5 } });
+        it('should return spin result and update points, coins, and spins', async () => {
+            // Mocking the unified balance response
+            axios.get.mockResolvedValueOnce({ data: { spins: 10, points: 100, coins: 50 } });
+            axios.post.mockResolvedValueOnce({ data: { pointsEarned: 21, newPointsBalance: 71, newCoinsBalance: 60 } });
 
             const response = await request(app)
                 .post('/spin')
                 .send({ userId: 'user123' });
 
-            // Log the response in case of failure for debugging
-            if (response.statusCode !== 200) {
-                console.error('Response:', response.body);
-            }
-
-            expect(response.statusCode).toBe(200);  // This is where it fails
+            expect(response.statusCode).toBe(200);
             expect(response.body).toHaveProperty('spinResult');
             expect(response.body).toHaveProperty('pointsEarned');
-            expect(response.body).toHaveProperty('newBalance');
-            expect(response.body).toHaveProperty('spinsLeft');
+            expect(response.body).toHaveProperty('newPointsBalance', 71);  // Updated
+            expect(response.body).toHaveProperty('newCoinsBalance', 60);  // Coins
+            expect(response.body).toHaveProperty('spinsLeft', 9);
+            expect(response.body).toHaveProperty('coinsLeft', 50);
+            expect(response.body).toHaveProperty('pointsLeft', 100);
         });
 
         it('should return 403 if not enough spins', async () => {
             // Mocking insufficient balance
-            axios.get.mockResolvedValueOnce({ data: { balance: 0 } });
+            axios.get.mockResolvedValueOnce({ data: { spins: 0, points: 100, coins: 50 } });
 
             const response = await request(app)
                 .post('/spin')

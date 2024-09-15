@@ -1,0 +1,36 @@
+{
+  "missions": [
+    {
+      "pointsGoal": 10,
+      "rewards": [
+        {
+          "type": "spins",
+          "amount": 10
+        }
+      ]
+    },
+    {
+      "pointsGoal": 20,
+      "rewards": [
+        {
+          "type": "coins",
+          "amount": 10
+        }
+      ]
+    },
+    {
+      "pointsGoal": 100,
+      "rewards": [
+        {
+          "type": "coins",
+          "amount": 100
+        },
+        {
+          "type": "spins",
+          "amount": 100
+        }
+      ]
+    }
+  ],
+  "resetIndex": 1
+}

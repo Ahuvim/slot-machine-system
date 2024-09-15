@@ -13,10 +13,12 @@ services:
       - POINTS_API=http://points-service:3001
       - REDIS_URL=redis://redis:6379
     volumes:
-      - ./slot-machine-service/swagger.yaml:/app/swagger.yaml  # Add this line for slot-machine Swagger
+      - ./slot-machine-service/swagger.yaml:/app/swagger.yaml
     depends_on:
       - points-service
       - redis
+    links:
+      - points-service  # Add this line to link the services
 
   points-service:
     build: ./points-service
@@ -25,6 +27,8 @@ services:
     environment:
       - REDIS_URL=redis://redis:6379
     volumes:
-      - ./points-service/swagger.yaml:/app/swagger.yaml  # Points-service Swagger volume
+      - ./points-service/swagger.yaml:/app/swagger.yaml
     depends_on:
+      - redis
+    links:
       - redis

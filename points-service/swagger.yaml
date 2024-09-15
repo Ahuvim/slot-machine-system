@@ -132,13 +132,13 @@ paths:
                   type: string
                 resource:
                   type: string
-                  enum: [points, spins, coins]
+                  enum: [ points, spins, coins ]
                 amount:
                   type: integer
             example:
               userId: "user123"
-              resource: "coins"
-              amount: 10
+              resource: "spins"
+              amount: 100  # Example to set spins balance
       responses:
         '200':
           description: Balance successfully set
@@ -151,8 +151,8 @@ paths:
                     type: string
                   newBalance:
                     type: integer
-              example:
-                message: "Coins balance updated successfully"
-                newBalance: 10
+                example:
+                  message: "Spins balance updated successfully"
+                  newBalance: 100
         '500':
           description: Internal server error

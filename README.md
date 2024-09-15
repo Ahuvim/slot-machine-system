@@ -15,18 +15,18 @@ This project implements a slot machine game with points accumulation and rewards
    npm start
    ```
 
-The services will be available at:
-- Slot Machine Service: http://localhost:3000
-- Points Service: http://localhost:3001
-- Swagger UI: 
-   - Slot Machine Service: http://localhost:3000/api-docs
-   - Points Service: http://localhost:3001/api-docs
 
 ## Docker Deployment
 1. Build and start the services:
    ```bash
    docker-compose up --build
    ```
+### API Address:
+- Slot Machine Service: http://localhost:3000
+- Points Service: http://localhost:3001
+### Swagger UI: 
+   - Slot Machine Service: http://localhost:3000/api-docs
+   - Points Service: http://localhost:3001/api-docs   
 
 ## Usage
 You can set the balance for any user using the /set-balance API.

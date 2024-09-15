@@ -4,7 +4,8 @@
   "main": "points-service.js",
   "scripts": {
     "start": "node points-service.js",
-    "dev": "nodemon points-service.js"
+    "dev": "nodemon points-service.js",
+    "test": "jest"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -15,6 +16,8 @@
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7"
+    "ioredis-mock": "^8.9.0",
+    "nodemon": "^2.0.7",
+    "or": "^0.2.0"
   }
 }

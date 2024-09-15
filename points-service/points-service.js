@@ -129,3 +129,4 @@ app.listen(PORT, () => {
     console.log(`Points service listening on port ${PORT}`);
     console.log(`Swagger UI should be available at http://localhost:${PORT}/api-docs`);
 });
+module.exports = app;

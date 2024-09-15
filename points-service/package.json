@@ -1,16 +1,17 @@
 {
   "name": "points-service",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "points-service.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "start": "node points-service.js",
+    "dev": "nodemon points-service.js"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "ioredis": "^4.27.6",
-    "winston": "^3.3.3",
     "swagger-ui-express": "^4.1.6",
+    "winston": "^3.3.3",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {

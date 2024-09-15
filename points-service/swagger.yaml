@@ -1,57 +1,14 @@
 openapi: 3.0.0
 info:
-  title: Slot Machine Microservices API
-  description: API for a slot machine game with points accumulation and rewards
+  title: Points Service API
+  description: Points Service to manage spins and points balance for a slot machine game.
   version: 1.0.0
 servers:
-  - url: http://localhost:3000
-    description: Slot Machine Service
   - url: http://localhost:3001
-    description: Points Service
 paths:
-  /spin:
-    post:
-      summary: Spin the slot machine
-      tags:
-        - Slot Machine
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                userId:
-                  type: string
-            example:
-              userId: "user123"
-      responses:
-        '200':
-          description: Successful spin
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  spinResult:
-                    type: array
-                    items:
-                      type: integer
-                  pointsEarned:
-                    type: integer
-                  newBalance:
-                    type: integer
-              example:
-                spinResult: [7, 7, 7]
-                pointsEarned: 21
-                newBalance: 71
-        '403':
-          description: Not enough spins
-        '500':
-          description: Internal server error
   /balance/{userId}/{resource}:
     get:
-      summary: Get user balance
+      summary: Get the balance of spins or points
       tags:
         - Points
       parameters:
@@ -78,9 +35,11 @@ paths:
                     type: integer
               example:
                 balance: 100
+        '500':
+          description: Internal server error
   /update:
     post:
-      summary: Update user points and spins after a spin
+      summary: Update the user's points and spins after a spin
       tags:
         - Points
       requestBody:
@@ -104,7 +63,7 @@ paths:
               spinsUsed: 1
       responses:
         '200':
-          description: Successful update
+          description: Successfully updated
           content:
             application/json:
               schema:
@@ -120,13 +79,11 @@ paths:
                 pointsEarned: 21
                 newBalance: 71
                 missionCompleted: true
-        '400':
-          description: Missing required fields
         '500':
           description: Internal server error
   /set-balance:
     post:
-      summary: Set balance for a user
+      summary: Set the balance of spins or points for a user
       tags:
         - Points
       requestBody:
@@ -149,7 +106,7 @@ paths:
               amount: 10
       responses:
         '200':
-          description: Balance set successfully
+          description: Balance successfully set
           content:
             application/json:
               schema:
@@ -158,20 +115,9 @@ paths:
                   message:
                     type: string
                   newBalance:
-                    type: string
+                    type: integer
               example:
-                message: "spins balance updated successfully"
-                newBalance: "10"
-        '400':
-          description: Missing required fields or invalid resource type
+                message: "Spins balance updated successfully"
+                newBalance: 10
         '500':
           description: Internal server error
-components:
-  schemas:
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-      example:
-        error: "Internal server error"

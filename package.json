@@ -1,0 +1,14 @@
+{
+  "name": "slot-machine-project",
+  "version": "1.0.0",
+  "description": "Slot Machine Microservices Project",
+  "scripts": {
+    "start": "concurrently \"npm run start:slot\" \"npm run start:points\"",
+    "start:slot": "cd slot-machine-service && npm start",
+    "start:points": "cd points-service && npm start",
+    "install-all": "npm install && cd slot-machine-service && npm install && cd ../points-service && npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^6.2.0"
+  }
+}

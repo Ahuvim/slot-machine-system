@@ -1,0 +1,57 @@
+openapi: 3.0.0
+info:
+  title: Slot Machine API
+  description: Slot Machine Service for generating spins and reducing spins balance.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+paths:
+  /spin:
+    post:
+      summary: Spin the slot machine
+      description: Generates a random spin result and updates the points balance if the user gets three identical digits. The spins balance is reduced by 1 after each spin.
+      tags:
+        - Slot Machine
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  description: The ID of the user
+            example:
+              userId: "user123"
+      responses:
+        '200':
+          description: Successful spin
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  spinResult:
+                    type: array
+                    items:
+                      type: integer
+                    description: The result of the spin
+                  pointsEarned:
+                    type: integer
+                    description: The points earned from the spin (if three identical digits)
+                  newBalance:
+                    type: integer
+                    description: The updated points balance
+                  spinsLeft:
+                    type: integer
+                    description: The remaining spins
+              example:
+                spinResult: [7, 7, 7]
+                pointsEarned: 21
+                newBalance: 71
+                spinsLeft: 5
+        '403':
+          description: Not enough spins
+        '500':
+          description: Internal server error

@@ -1,0 +1,30 @@
+version: '3'
+services:
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  slot-machine-service:
+    build: ./slot-machine-service
+    ports:
+      - "3000:3000"
+    environment:
+      - POINTS_API=http://points-service:3001
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ./slot-machine-service/swagger.yaml:/app/swagger.yaml  # Add this line for slot-machine Swagger
+    depends_on:
+      - points-service
+      - redis
+
+  points-service:
+    build: ./points-service
+    ports:
+      - "3001:3001"
+    environment:
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ./points-service/swagger.yaml:/app/swagger.yaml  # Points-service Swagger volume
+    depends_on:
+      - redis

@@ -32,7 +32,21 @@ try {
   process.exit(1);
 }
 
+let swaggerDocument;
+try {
+  swaggerDocument = YAML.load(path.join(__dirname, 'swagger.yaml'));
+  console.log('Swagger document loaded successfully');
+} catch (error) {
+  console.error(`Failed to load Swagger document: ${error.message}`);
+  swaggerDocument = null;
+}
 
+if (swaggerDocument) {
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+  console.log('Swagger UI set up at /api-docs');
+} else {
+  console.warn('Swagger UI is not available due to configuration load failure');
+}
 
 app.get('/balance/:userId/:resource', async (req, res) => {
   const { userId, resource } = req.params;
@@ -142,3 +156,9 @@ app.post('/set-balance', async (req, res) => {
   }
 });
 
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  logger.info(`Points service listening on port ${PORT}`);
+  console.log(`Points service listening on port ${PORT}`);
+  console.log(`Swagger UI should be available at http://localhost:${PORT}/api-docs`);
+});
